@@ -1,5 +1,7 @@
 const router = require("express").Router();
 const { Category, Product } = require("../../models");
+Product.belongsTo(Category, { foreignKey: "category_id" });
+Category.hasMany(Product, { foreignKey: "category_id" });
 
 // The `/api/categories` endpoint
 
@@ -41,7 +43,7 @@ router.post("/", async (req, res) => {
         // create a new category
         const category_data = req.body;
 
-        const new_category = await countReset.create(category_data);
+        const new_category = await Category.create(category_data);
 
         res.status(201).json(new_category);
     } catch (error) {
@@ -55,6 +57,9 @@ router.put("/:id", async (req, res) => {
     try {
         const { id } = req.params;
         const { new_data } = req.body;
+
+        console.log(new_data);
+        console.log(id);
 
         const updated_category = await Category.update(new_data, {
             where: { id },

@@ -4,7 +4,14 @@ const sequelize = require("../config/connection.js");
 
 const Product = require("./Product");
 
-class Tag extends Model {}
+class Tag extends Model {
+    static associate(models) {
+        Tag.belongsToMany(models.Product, {
+            through: "ProductTag", // Specify the join table name
+            foreignKey: "tag_id",
+        });
+    }
+}
 
 Tag.init(
     {
