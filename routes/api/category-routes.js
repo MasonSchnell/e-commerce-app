@@ -1,7 +1,5 @@
 const router = require("express").Router();
 const { Category, Product } = require("../../models");
-Product.belongsTo(Category, { foreignKey: "category_id" });
-Category.hasMany(Product, { foreignKey: "category_id" });
 
 // The `/api/categories` endpoint
 
@@ -58,9 +56,6 @@ router.put("/:id", async (req, res) => {
         const { id } = req.params;
         const { new_data } = req.body;
 
-        console.log(new_data);
-        console.log(id);
-
         const updated_category = await Category.update(new_data, {
             where: { id },
         });
@@ -87,7 +82,7 @@ router.delete("/:id", async (req, res) => {
         if (deleted_category === 1) {
             res.status(204).end();
         } else {
-            res.setMaxListeners(404).json({ message: "Category not found" });
+            res.status(404).json({ message: "Category not found" });
         }
     } catch (error) {
         console.error(error);

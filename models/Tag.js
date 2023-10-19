@@ -7,7 +7,7 @@ const Product = require("./Product");
 class Tag extends Model {
     static associate(models) {
         Tag.belongsToMany(models.Product, {
-            through: "ProductTag", // Specify the join table name
+            through: "ProductTag",
             foreignKey: "tag_id",
         });
     }

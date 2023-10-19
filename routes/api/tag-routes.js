@@ -1,7 +1,5 @@
 const router = require("express").Router();
 const { Tag, Product, ProductTag } = require("../../models");
-// Product.belongsToMany(Tag, { through: ProductTag, foreignKey: "product_id" });
-// Tag.belongsToMany(Product, { through: ProductTag, foreignKey: "tag_id" });
 
 // The `/api/tags` endpoint
 
