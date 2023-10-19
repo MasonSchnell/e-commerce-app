@@ -38,6 +38,7 @@ This is a simple web application that allows users to update a MySQL database us
 ## Acknowledgments
 
 -   Rutgers Full Stack Development Team
+-   [Sequelize Getting Started]([https://www.w3schools.com/MySQL/default.asp](https://sequelize.org/docs/v6/getting-started/))
 
 ## License
 
