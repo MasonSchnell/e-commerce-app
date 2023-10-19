@@ -1,5 +1,7 @@
 const router = require("express").Router();
 const { Tag, Product, ProductTag } = require("../../models");
+// Product.belongsToMany(Tag, { through: ProductTag, foreignKey: "product_id" });
+// Tag.belongsToMany(Product, { through: ProductTag, foreignKey: "tag_id" });
 
 // The `/api/tags` endpoint
 
@@ -7,11 +9,11 @@ router.get("/", async (req, res) => {
     // find all tags
     // be sure to include its associated Product data
     try {
-        const product_tags = await ProductTag.findAll({
+        const tags = await Tag.findAll({
             include: Product,
         });
 
-        res.json(product_tags);
+        res.json(tags);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Server error" });
@@ -22,13 +24,13 @@ router.get("/:id", async (req, res) => {
     // find a single tag by its `id`
     // be sure to include its associated Product data
     try {
-        const product_tag_id = req.params.id;
-        const product_tag = await ProductTag.findByPk(product_tag_id, {
+        const tag_id = req.params.id;
+        const tag = await Tag.findByPk(tag_id, {
             include: Product,
         });
 
-        if (product_tag) {
-            res.json(product_tag);
+        if (tag) {
+            res.json(tag);
         } else {
             res.status(404).json({ message: "Product tag not found" });
         }
@@ -41,11 +43,11 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
     // create a new tag
     try {
-        const product_tag_id = req.body;
+        const tag_id = req.body;
 
-        const new_product_id = await ProductTag.create(product_tag_id);
+        const new_id = await Tag.create(tag_id);
 
-        res.status(201).json(new_product_id);
+        res.status(201).json(new_id);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Server error" });
@@ -58,17 +60,14 @@ router.put("/:id", async (req, res) => {
         const { id } = req.params;
         const { new_data } = req.body;
 
-        const updated_product_id = await Tag.update(
-            { name: new_data.name },
-            {
-                where: { id },
-            }
-        );
+        const tag_id = await Tag.update(new_data, {
+            where: { id },
+        });
 
-        if (updated_product_id[0] === 1) {
-            res.status(200).json({ message: "Product tag" });
+        if (tag_id[0] === 1) {
+            res.status(200).json({ message: "Tag Updated" });
         } else {
-            res.status(404).json({ message: "Product tag not found" });
+            res.status(404).json({ message: "Tag not found" });
         }
     } catch (error) {
         console.log(error);

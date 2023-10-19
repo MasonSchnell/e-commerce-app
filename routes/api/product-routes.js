@@ -1,6 +1,10 @@
 const router = require("express").Router();
 const { Product, Category, Tag, ProductTag } = require("../../models");
+Product.belongsTo(Category, { foreignKey: "category_id" });
+Category.hasMany(Product, { foreignKey: "category_id" });
 
+Product.belongsToMany(Tag, { through: ProductTag, foreignKey: "product_id" });
+Tag.belongsToMany(Product, { through: ProductTag, foreignKey: "tag_id" });
 // The `/api/products` endpoint
 
 // get all products
@@ -26,7 +30,7 @@ router.get("/:id", async (req, res) => {
     try {
         const product_id = req.params.id;
 
-        const product = await Product.finaByPk(product_id, {
+        const product = await Product.findByPk(product_id, {
             include: [{ model: Category }, { model: Tag, through: ProductTag }],
         });
 

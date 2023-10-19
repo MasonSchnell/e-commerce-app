@@ -3,7 +3,7 @@ const sequelize = require("../config/connection.js");
 
 class Category extends Model {
     static associate(models) {
-        Category.hasMany(models.Product);
+        Category.hasMany(models.Product, { foreignKey: "category_id" });
     }
 }
 

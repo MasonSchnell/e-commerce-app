@@ -8,6 +8,10 @@ const sequelize = require("../config/connection");
 class Product extends Model {
     static associate(models) {
         Product.belongsTo(models.Category, { foreignKey: "category_id" });
+        Product.belongsToMany(models.Tag, {
+            through: "ProductTag",
+            foreignKey: "product_id",
+        });
     }
 }
 
